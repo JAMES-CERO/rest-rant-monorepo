@@ -33,8 +33,6 @@ router.get('/profile', async (req, res) => {
     } catch {
         res.json(null)
     }
-
-    
 })
 
 
