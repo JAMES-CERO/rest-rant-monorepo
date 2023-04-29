@@ -5,7 +5,17 @@ const bcrypt= require('bcrypt')
 const { User} = db
 
 router.post('/', async (req, res) => {
-    console.log('You rock Auth')
+    let user = await User.findOne({
+        where: { email : req.body.email }
+    })
+    
+    if (!user || !await bcrypt.compare(req.body.password, user.passwordDigest)) {
+        res.status(404).json({
+            message: 'Could not find an user that matches with the provided information'
+        }) 
+    } else {
+        res.json({user})
+    }
 })
 
 module.exports = router
