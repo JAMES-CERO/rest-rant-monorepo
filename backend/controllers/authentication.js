@@ -26,7 +26,7 @@ router.get('/profile', async (req, res) => {
     try {
         let user = await User.findOne({
             where: {
-                userId: req.sessiom.userId
+                userId: req.session.userId
             } 
         })
         res.json(user)
