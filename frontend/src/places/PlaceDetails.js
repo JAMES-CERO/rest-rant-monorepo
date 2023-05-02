@@ -48,9 +48,6 @@ function PlaceDetails() {
 	}
 
 	async function createComment(commentAttributes) {
-		if(!place) {
-			return;
-		}
 		
 		const response = await fetch(`http://localhost:4000/places/${place.placeId}/comments`, {
 			method: 'POST',

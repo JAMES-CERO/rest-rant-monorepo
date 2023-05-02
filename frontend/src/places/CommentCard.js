@@ -7,7 +7,7 @@ function CommentCard({ comment, onDelete }) {
 
     let deleteButtom = null;
 
-    if (currentUser?.userId === comment.commentId) {
+    if (currentUser?.userId === comment.authorId) {
         deleteButtom = (
             <button className="btn btn-danger" onClick={onDelete} >
                 Delete Comment
