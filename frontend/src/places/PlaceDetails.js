@@ -48,6 +48,10 @@ function PlaceDetails() {
 	}
 
 	async function createComment(commentAttributes) {
+		if(!place) {
+			return;
+		}
+		
 		const response = await fetch(`http://localhost:4000/places/${place.placeId}/comments`, {
 			method: 'POST',
 			credentials: 'include',
@@ -56,9 +60,9 @@ function PlaceDetails() {
 			},
 			body: JSON.stringify(commentAttributes)
 		})
-
+	
 		const comment = await response.json()
-
+	
 		setPlace({
 			...place,
 			comments: [
@@ -66,7 +70,6 @@ function PlaceDetails() {
 				comment
 			]
 		})
-
 	}
 
 

@@ -82,6 +82,8 @@ router.delete('/:placeId', async (req, res) => {
 })
 
 router.post('/:placeId/comments', async (req, res) => {
+    console.log('$$$')
+    console.log(req.body)
     const placeId = Number(req.params.placeId)
 
     req.body.rant = req.body.rant ? true : false
@@ -94,18 +96,7 @@ router.post('/:placeId/comments', async (req, res) => {
         res.status(404).json({ message: `Could not find place with id "${placeId}"` })
     }
 
-    let currentUser;
-    try {
-        let currentUser = await User.findOne({
-            where: {
-                userId: req.session.userId
-            } 
-        })
-    } catch {
-        currentUser(null)
-    }
-
-    if(!currentUser) {
+    if (!req.currentUser) {
         return res.status(404).json({
             message: 'You must be logged in to do this action'
         })
@@ -113,13 +104,13 @@ router.post('/:placeId/comments', async (req, res) => {
 
     const comment = await Comment.create({
         ...req.body,
-        authorId: currentUser.userId ,
+        authorId: req.currentUser.userId,
         placeId: placeId
     })
 
     res.send({
         ...comment.toJSON(),
-        author
+        author: req.currentUser
     })
 })
 
@@ -137,6 +128,10 @@ router.delete('/:placeId/comments/:commentId', async (req, res) => {
         })
         if (!comment) {
             res.status(404).json({ message: `Could not find comment with id "${commentId}" for place with id "${placeId}"` })
+        } else if (comment.authorId !== req.currentUser?.userId) {
+            res.status(403).json({
+                message:`You dont have the permission to delete the comment:'${comment.commentId}'`
+            })
         } else {
             await comment.destroy()
             res.json(comment)
