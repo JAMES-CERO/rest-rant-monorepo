@@ -48,7 +48,7 @@ function PlaceDetails() {
 	}
 
 	async function createComment(commentAttributes) {
-		
+
 		const response = await fetch(`http://localhost:4000/places/${place.placeId}/comments`, {
 			method: 'POST',
 			credentials: 'include',
@@ -57,9 +57,9 @@ function PlaceDetails() {
 			},
 			body: JSON.stringify(commentAttributes)
 		})
-	
+
 		const comment = await response.json()
-	
+
 		setPlace({
 			...place,
 			comments: [
@@ -101,6 +101,20 @@ function PlaceDetails() {
 			)
 		})
 	}
+	// let placeActions = null
+
+	// if (currentUser?.role === 'admin') {
+	// 	placeActions = (
+	// 		<>
+	// 			<a className="btn btn-warning" onClick={editPlace}>
+	// 				Edit
+	// 			</a>
+	// 			<button type="submit" className="btn btn-danger" onClick={deletePlace}>
+	// 				Delete
+	// 			</button>
+	// 		</>
+	// 	)
+	// }
 
 
 	return (
