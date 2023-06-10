@@ -1,17 +1,19 @@
 // Modules and Globals
-require('dotenv').config()
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const app = express();
-const cookieSession = require('cookie-session')
-const defineCurrentUser = require('./middleware/defineCurrentUser')
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express, { Application } from 'express';
+
+import cors from 'cors'
+const app: Application = express();
+import cookieSession from 'cookie-session';
+const defineCurrentUser = require('./middleware/defineCurrentUser');
 
 // Express Settings
 app.use(cookieSession({
     name: 'session',
-    keys: [process.env.SESSION_SECRET ],
-    sameSite: 'stric',
+    keys: [process.env.SESSION_SECRET!],
+    sameSite: 'strict',
     maxAge: 24 * 60 * 60 * 1000 // 24 h
 }))
 app.use(cors({
@@ -20,7 +22,7 @@ app.use(cors({
 }))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.json()); // Use the built-in middleware for parsing JSON bodies
 app.use(defineCurrentUser)
 
 // Controllers & Routes
